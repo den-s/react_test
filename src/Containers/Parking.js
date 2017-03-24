@@ -19,14 +19,14 @@ export default class Parking extends React.Component {
       ...this.defaultPlaces
     }
 
-    const places = LS.get('places');
-    this.state = {places: places || []};
+    this.state = {places: []};
   }
 
   _calculateFreePlaces = (places=this.state.places) => {
     this.types.map(t => {
       this.currentPlaces[t] = this.defaultPlaces[t] - places.filter(p => p.placeType === t).length;
     })
+    this.forceUpdate();
   }
 
   _addCar = (id, carType, placeType) => {
@@ -89,7 +89,7 @@ export default class Parking extends React.Component {
   }
 
   getFreeSlots = () => {
-    return this._calculateFreePlaces();
+    return this.currentPlaces;
   }
 
   addCar = (carType) => {
@@ -117,7 +117,12 @@ export default class Parking extends React.Component {
       addCar: this.addCar,
       getCar: this.getCar,
     }
-    this._calculateFreePlaces();
+
+    this.setState({
+      places: LS.get('places')
+    }, () => {
+      this._calculateFreePlaces();
+    });
   }
 
   render() {
