@@ -41,6 +41,17 @@ export default class Parking extends React.Component {
     return true;
   }
 
+  _getCar = (id) => {
+    const { places } = this.state;
+    this.setState({
+      places: places.filter(p => p.id !== id)
+    }, () => {
+      LS.set('places', places);
+      this._calculateFreePlaces();
+    });
+
+  }
+
   _addDisabled = (id) => {
     if (this.currentPlaces.disabled > 0) {
       return this._addCar(id, 'disabled', 'disabled');
@@ -79,10 +90,16 @@ export default class Parking extends React.Component {
     return `busy for ${carType}`;
   }
 
+  _calculateIndex = () => {
+    const { places } = this.state;
+    if (Object.keys(places).length > 0) {
+      return places.sort((a, b) => a.id < b.id)[0].id;
+    }
+    return 0;
+  }
+
   addCar = (carType) => {
-    const id = parseInt(LS.get('id')) || 0;
-    console.log(12, LS.set('id', id));
-    const _id = id + 1;
+    const _id = this._calculateIndex() + 1;
     switch(carType) {
         case 'disabled': this._addDisabled(_id);
         break;
@@ -95,8 +112,8 @@ export default class Parking extends React.Component {
   }
 
   getCar = (id) => {
-    this._calculateFreePlaces();
-    return {id: 0, place: 0};
+    const { places } = this.state;
+    this._getCar(id);
   }
 
   componentWillMount() {
