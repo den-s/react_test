@@ -23,8 +23,7 @@ export default class Parking extends React.Component {
     this.state = {places: places || []};
   }
 
-  _calculateFreePlaces = () => {
-    const { places } = this.state;
+  _calculateFreePlaces = (places=this.state.places) => {
     this.types.map(t => {
       this.currentPlaces[t] = this.defaultPlaces[t] - places.filter(p => p.placeType === t).length;
     })
@@ -35,8 +34,8 @@ export default class Parking extends React.Component {
     this.setState({
       places: [...places, {id: id, placeType: placeType, carType: carType}]
     }, () => {
-      LS.set('places', places);
-      this._calculateFreePlaces();
+      LS.set('places', this.state.places);
+      this._calculateFreePlaces(this.state.places);
     });
     return true;
   }
@@ -49,7 +48,6 @@ export default class Parking extends React.Component {
       LS.set('places', places);
       this._calculateFreePlaces();
     });
-
   }
 
   _addDisabled = (id) => {
@@ -113,6 +111,7 @@ export default class Parking extends React.Component {
 
   getCar = (id) => {
     const { places } = this.state;
+    console.log(places.find(p => p.id === id));
     this._getCar(id);
   }
 
@@ -123,15 +122,6 @@ export default class Parking extends React.Component {
       addCar: this.addCar,
       getCar: this.getCar,
     }
-
-    // LS.set('places', [
-      // {id: 0, carType: 'truck', placeType: 'truck'},
-      // {id: 1, carType: 'sedan', placeType: 'truck'},
-      // {id: 2, carType: 'disabled', placeType: 'sedan'},
-      // {id: 3, carType: 'sedan', placeType: 'sedan'},
-      // {id: 4, carType: 'truck', placeType: 'truck'},
-      // {id: 5, carType: 'sedan', placeType: 'sedan'},
-    // ])
     this._calculateFreePlaces();
   }
 
