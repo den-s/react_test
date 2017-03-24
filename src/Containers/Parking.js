@@ -22,7 +22,8 @@ export default class Parking extends React.Component {
     this.state = {places: []};
   }
 
-  _calculateFreePlaces = (places=this.state.places) => {
+  _calculateFreePlaces = () => {
+    const { places } = this.state;
     this.types.map(t => {
       this.currentPlaces[t] = this.defaultPlaces[t] - places.filter(p => p.placeType === t).length;
     })
@@ -34,8 +35,8 @@ export default class Parking extends React.Component {
     this.setState({
       places: [...places, {id: id, placeType: placeType, carType: carType}]
     }, () => {
-      LS.set('places', this.state.places);
-      this._calculateFreePlaces(this.state.places);
+      LS.set('places', places);
+      this._calculateFreePlaces();
     });
     return true;
   }
@@ -101,13 +102,14 @@ export default class Parking extends React.Component {
         break;
         case 'truck': this._addTruck(_id);
         break;
+        default: return false;
     }
     return {id: _id};
   }
 
   getCar = (id) => {
     const { places } = this.state;
-    console.log(places.find(p => p.id === id));
+    console.info(places.find(p => p.id === id));
     this._getCar(id);
   }
 
@@ -119,7 +121,7 @@ export default class Parking extends React.Component {
     }
 
     this.setState({
-      places: LS.get('places')
+      places: LS.get('places') || []
     }, () => {
       this._calculateFreePlaces();
     });

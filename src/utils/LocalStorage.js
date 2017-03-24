@@ -11,7 +11,7 @@ export default class LS {
           case 'number':
             localStorage.setItem(key, toString(data));
             break;
-          default: false
+          default: return false
       }
     } catch (e) {
         return false;
