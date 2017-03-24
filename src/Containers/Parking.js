@@ -35,7 +35,7 @@ export default class Parking extends React.Component {
     this.setState({
       places: [...places, {id: id, placeType: placeType, carType: carType}]
     }, () => {
-      LS.set('places', places);
+      LS.set('places', this.state.places);
       this._calculateFreePlaces();
     });
     console.info(`Your car number is ${id}`);
