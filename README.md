@@ -1,5 +1,5 @@
 ## Public methods:
-# window.truck.methods:
+# window.parking.methods:
 - getFreeSlots()
 - addCar(disabled | sedan | truck)
 - getCar(id)
