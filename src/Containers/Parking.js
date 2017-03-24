@@ -47,7 +47,7 @@ export default class Parking extends React.Component {
     this.setState({
       places: places.filter(p => p.id !== id)
     }, () => {
-      LS.set('places', places);
+      LS.set('places', this.state.places);
       this._calculateFreePlaces();
     });
   }
