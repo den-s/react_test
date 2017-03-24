@@ -4,9 +4,8 @@ import BaseCar from './BaseCar';
 export default class Sedan extends BaseCar {
   render() {
     return (
-      <div>Sedan</div>
+      <div>Sedan = {this.props.counter}</div>
     );
   }
-
 }
 
