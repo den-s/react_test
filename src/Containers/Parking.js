@@ -38,6 +38,7 @@ export default class Parking extends React.Component {
       LS.set('places', places);
       this._calculateFreePlaces();
     });
+    console.info(`Your car number is ${id}`);
     return true;
   }
 
@@ -84,7 +85,7 @@ export default class Parking extends React.Component {
   _calculateIndex = () => {
     const { places } = this.state;
     if (Object.keys(places).length > 0) {
-      return places.sort((a, b) => a.id < b.id)[0].id;
+      return Math.max.apply(Math,places.map(function(o){return o.id;}))
     }
     return 0;
   }
@@ -104,7 +105,6 @@ export default class Parking extends React.Component {
         break;
         default: return false;
     }
-    return {id: _id};
   }
 
   getCar = (id) => {
