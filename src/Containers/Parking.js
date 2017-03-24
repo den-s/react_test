@@ -80,20 +80,16 @@ export default class Parking extends React.Component {
     }
   }
 
-  getFreeSlots = () => {
-    return this._calculateFreePlaces();
-  }
-
-  getBusySlots = (carType) => {
-    return `busy for ${carType}`;
-  }
-
   _calculateIndex = () => {
     const { places } = this.state;
     if (Object.keys(places).length > 0) {
       return places.sort((a, b) => a.id < b.id)[0].id;
     }
     return 0;
+  }
+
+  getFreeSlots = () => {
+    return this._calculateFreePlaces();
   }
 
   addCar = (carType) => {
@@ -118,7 +114,6 @@ export default class Parking extends React.Component {
   componentWillMount() {
     window.parking = {
       getFreeSlots: this.getFreeSlots,
-      getBusySlots: this.getBusySlots,
       addCar: this.addCar,
       getCar: this.getCar,
     }
